@@ -1,0 +1,21 @@
+---
+- name: Deploy ORDS container
+  hosts: rhel9_server
+  become: yes
+  tasks:
+    - name: Ensure Podman is installed
+      yum:
+        name: podman
+        state: present
+
+    - name: Pull ORDS image from local build
+      command: podman pull localhost/ords:latest
+
+    - name: Run ORDS container
+      podman_container:
+        name: ords
+        image: localhost/ords:latest
+        state: started
+        ports:
+          - "8080:8080"
+        restart_policy: always

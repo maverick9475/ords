@@ -1,0 +1,49 @@
+---
+- name: Deploy Oracle Database Container
+  hosts: databaseservers
+  become: yes
+  tasks:
+    - name: Install Podman
+      yum:
+        name: podman
+        state: present
+
+    - name: Create a directory for Dockerfile and files
+      file:
+        path: /opt/oracle_db
+        state: directory
+
+    - name: Copy Dockerfile to the server
+      copy:
+        src: ./Dockerfile
+        dest: /opt/oracle_db/Dockerfile
+
+    - name: Copy Oracle installer to the server
+      copy:
+        src: ./LINUX.X64_193000_db_home.zip
+        dest: /opt/oracle_db/LINUX.X64_193000_db_home.zip
+
+    - name: Copy run script to the server
+      copy:
+        src: ./runOracle.sh
+        dest: /opt/oracle_db/runOracle.sh
+        mode: '0755'
+
+    - name: Copy response file to the server
+      copy:
+        src: ./dbca.rsp
+        dest: /opt/oracle_db/dbca.rsp
+
+    - name: Build Oracle Database container image
+      community.general.podman_image:
+        name: oracle_db:19c
+        path: /opt/oracle_db
+
+    - name: Run Oracle Database container
+      community.general.podman_container:
+        name: oracle_db
+        image: oracle_db:19c
+        state: started
+        ports:
+          - "1521:1521"
+          - "5500:5500"

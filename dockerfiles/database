@@ -1,0 +1,49 @@
+# Dockerfile
+# Use Oracle Linux as base image
+FROM oraclelinux:8-slim
+
+# Set the necessary environment variables
+ENV ORACLE_BASE=/opt/oracle \
+    ORACLE_HOME=/opt/oracle/product/19c/dbhome_1 \
+    ORACLE_SID=ORCLCDB \
+    PATH=$PATH:$ORACLE_HOME/bin \
+    INSTALL_FILE_1="LINUX.X64_193000_db_home.zip" \
+    RUN_FILE="runOracle.sh" \
+    CONFIG_RSP="dbca.rsp"
+
+# Install required packages
+RUN microdnf install -y oracle-release-el8 && \
+    microdnf install -y oracle-database-preinstall-19c unzip && \
+    microdnf clean all
+
+# Create necessary directories
+RUN mkdir -p $ORACLE_BASE && \
+    mkdir -p $ORACLE_HOME && \
+    mkdir -p /opt/install
+
+# Copy installation files to the container
+COPY $INSTALL_FILE_1 /opt/install/
+
+# Set up Oracle directories and permissions
+RUN chown -R oracle:oinstall /opt/oracle && \
+    chmod -R 775 /opt/oracle
+
+# Unzip and install Oracle Database software
+RUN cd /opt/install && \
+    unzip $INSTALL_FILE_1 -d $ORACLE_HOME && \
+    $ORACLE_HOME/runInstaller -silent -responseFile $ORACLE_HOME/install/response/db_install.rsp && \
+    $ORACLE_HOME/root.sh && \
+    rm -rf /opt/install/*
+
+# Copy run script and response file to the container
+COPY $RUN_FILE $ORACLE_BASE/
+COPY $CONFIG_RSP $ORACLE_BASE/
+
+# Expose necessary ports
+EXPOSE 1521 5500
+
+# Set the working directory
+WORKDIR $ORACLE_BASE
+
+# Default command to run
+CMD ["./runOracle.sh"]

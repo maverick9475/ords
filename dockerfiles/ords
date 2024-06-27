@@ -1,0 +1,34 @@
+# Dockerfile
+
+# Use an official Oracle Linux image as a base
+FROM oraclelinux:8
+
+# Install necessary packages
+RUN microdnf install -y \
+    java-11-openjdk \
+    unzip \
+    && microdnf clean all
+
+# Set environment variables
+ENV ORDS_VERSION=21.4.3
+ENV JAVA_HOME=/usr/lib/jvm/jre-11-openjdk
+
+# Create a directory for ORDS
+RUN mkdir -p /opt/ords
+
+# Copy the ORDS zip file to the container
+COPY ords-${ORDS_VERSION}.zip /opt/ords/
+
+# Unzip ORDS
+RUN unzip /opt/ords/ords-${ORDS_VERSION}.zip -d /opt/ords/ \
+    && rm /opt/ords/ords-${ORDS_VERSION}.zip
+
+# Set working directory
+WORKDIR /opt/ords
+
+# Expose the default ORDS port
+EXPOSE 8080
+
+# Command to start ORDS
+CMD ["sh", "-c", "java -jar ords.war standalone"]
+

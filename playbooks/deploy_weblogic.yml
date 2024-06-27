@@ -1,0 +1,43 @@
+---
+- name: Deploy WebLogic Container
+  hosts: webservers
+  become: yes
+  tasks:
+    - name: Install Podman
+      yum:
+        name: podman
+        state: present
+
+    - name: Create a directory for Dockerfile and files
+      file:
+        path: /opt/weblogic
+        state: directory
+
+    - name: Copy Dockerfile to the server
+      copy:
+        src: ./Dockerfile
+        dest: /opt/weblogic/Dockerfile
+
+    - name: Copy WebLogic installer to the server
+      copy:
+        src: ./fmw_12.2.1.4.0_wls_Disk1_1of1.zip
+        dest: /opt/weblogic/fmw_12.2.1.4.0_wls_Disk1_1of1.zip
+
+    - name: Copy WebLogic response file to the server
+      copy:
+        src: ./wls.rsp
+        dest: /opt/weblogic/wls.rsp
+
+    - name: Build WebLogic container image
+      community.general.podman_image:
+        name: weblogic:12.2.1.4.0
+        path: /opt/weblogic
+
+    - name: Run WebLogic container
+      community.general.podman_container:
+        name: weblogic
+        image: weblogic:12.2.1.4.0
+        state: started
+        ports:
+          - "7001:7001"
+          - "9002:9002"

@@ -1,0 +1,8 @@
+[ords]
+host1 ansible_host=your_host_ip
+
+[weblogic]
+host2 ansible_host=your_host_ip
+
+[autonomous_database]
+host3 ansible_host=your_host_ip

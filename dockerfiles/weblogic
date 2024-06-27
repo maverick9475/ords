@@ -1,0 +1,41 @@
+# Dockerfile
+
+# Use Oracle Linux as base image
+FROM oraclelinux:7-slim
+
+# Set the necessary environment variables
+ENV ORACLE_HOME=/u01/oracle \
+    ORACLE_BASE=/u01 \
+    ORACLE_SID=ORCL \
+    PATH=$PATH:$ORACLE_HOME/bin
+
+# Install required packages
+RUN yum -y update && \
+    yum -y install \
+        java-1.8.0-openjdk \
+        wget \
+        unzip && \
+    yum clean all
+
+# Create necessary directories
+RUN mkdir -p /u01 && \
+    mkdir -p /u01/oracle && \
+    mkdir -p /u01/wls_installer
+
+# Copy WebLogic installer to the container
+COPY fmw_12.2.1.4.0_wls_Disk1_1of1.zip /u01/wls_installer/
+
+# Install WebLogic
+RUN cd /u01/wls_installer && \
+    unzip fmw_12.2.1.4.0_wls_Disk1_1of1.zip && \
+    java -jar fmw_12.2.1.4.0_wls_generic.jar -silent -responseFile /u01/wls_installer/wls.rsp && \
+    rm -rf /u01/wls_installer
+
+# Expose necessary ports
+EXPOSE 7001 9002
+
+# Set the working directory
+WORKDIR /u01/oracle
+
+# Default command to run
+CMD ["bash"]
