@@ -1,122 +1,124 @@
-## Guide to Install Ansible Automation Platform (Ansible Tower) on the KVM Guest Server
+Here's a detailed guide to installing Ansible Automation Platform (Ansible Tower) on your KVM guest server using the provided commands:
 
-This guide outlines the steps to install the Ansible Automation Platform on a KVM guest server running Red Hat Enterprise Linux (RHEL) 9.4.
+### Download Ansible Automation Platform from the Red Hat Website:
 
-### Step-by-Step Installation Guide
+#### Download Red Hat Ansible Automation Platform
 
-#### 1. Initial Setup and Update
+Make sure to use a Red Hat Developer account to access the URL below and download "Red Hat Ansible Automation Platform" version "2.3 for RHEL", or make sure the version you're downloading will RHEL OS release version you installed on your virtual machine.
 
-1. **Disable Bracketed Paste Mode:**
-   ```bash
-   bind 'set enable-bracketed-paste off'
-   ```
+https://access.redhat.com/downloads/content/480/ver=2.3/rhel---8/2.3/x86_64/product-software
 
-2. **Register and Attach Subscription:**
-   ```bash
-   sudo subscription-manager register
-   sudo subscription-manager attach --auto
-   ```
+Red Hat Ansible Automation Platform 2.4
+https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.4
 
-3. **Update the System:**
-   ```bash
-   sudo dnf update -y && sudo reboot
-   ```
 
-#### 2. Configure Hostname
+### Installing Ansible Automation Platform (Ansible Tower)
 
-1. **Check Current Hostname:**
-   ```bash
-   hostnamectl status
-   ```
+#### 1. SSH into the KVM Guest Server
 
-2. **Set New Hostname:**
-   ```bash
-   sudo hostnamectl set-hostname ansibletower
-   ```
+```bash
+ssh vagrant@<kvmguest-ip>
+bind 'set enable-bracketed-paste off'
+```
 
-3. **Backup and Modify /etc/hosts:**
-   ```bash
-   sudo cp -av /etc/hosts /etc/hosts.backup.original
-   sudo cp -av /etc/hosts /etc/hosts.backup.$( date +%F_%s )
-   sudo cp -av /etc/hosts /etc/hosts.backup
-   echo "127.0.1.1 ansibletower" | sudo tee -a /etc/hosts 
-   ```
+- **Explanation:**
+  - `ssh vagrant@<kvmguest-ip>`: SSH into the KVM guest server using the IP address.
+  - `bind 'set enable-bracketed-paste off'`: Disables bracketed paste mode in your terminal to avoid unintended pasting issues.
 
-4. **Update the System Again:**
-   ```bash
-   sudo dnf update -y && sudo dnf upgrade -y
-   ```
+#### 2. Check sudo Privileges
 
-#### 3. Install Ansible Automation Platform
+```bash
+sudo -l
+```
 
-1. **Verify the Setup Bundle:**
-   ```bash
-   ls ansible-automation-platform-setup-bundle-2.3-1.tar.gz
-   ```
+- **Explanation:**
+  - `sudo -l`: Checks your sudo privileges to ensure you have necessary permissions for installation steps.
 
-2. **Extract the Setup Bundle:**
-   ```bash
-   tar -zxf ansible-automation-platform-setup-bundle-2.3-1.tar.gz 
-   cd ansible-automation-platform-setup-bundle-2.3-1
-   ```
+#### 3. Transfer and Extract Ansible Automation Platform Setup Bundle
 
-3. **Backup and Modify Inventory File:**
-   ```bash
-   cp -av inventory inventory.backup.original
-   cp -av inventory inventory.backup.$( date +%F_%s )
-   cp -av inventory inventory.backup
-   ```
+```bash
+scp lnxuser@192.168.1.5:~/Downloads/rhel8_ansible-automation-platform-setup-bundle-2.3-5.tar.gz .
+tar -zxf *.tar.gz
+cd ansible*
+```
 
-4. **Edit the Inventory File:**
-   ```bash
-   cat << EOF > inventory
-   [automationcontroller]
-   fqdn ansible_connection=local
+- **Explanation:**
+  - `scp`: Copies the setup bundle (`rhel8_ansible-automation-platform-setup-bundle-2.3-5.tar.gz`) from a remote server (`192.168.1.5`) to your current directory.
+  - `tar -zxf *.tar.gz`: Extracts the setup bundle.
+  - `cd ansible*`: Changes directory into the extracted Ansible Automation Platform setup directory.
 
-   [database]
+#### 4. Configure Inventory File
 
-   [all:vars]
-   admin_password='redhat'
-   pg_host=''
-   pg_port=''
-   pg_database='awx'
-   pg_username='awx'
-   pg_password='redhat'
-   EOF
-   ```
+```bash
+cp -av inventory inventory.backup.original
+cp -av inventory inventory.backup.$( date +%F_%s )
+cp -av inventory inventory.backup
 
-5. **Run the Setup Script:**
-   ```bash
-   sudo ./setup.sh
-   ```
+cat << EOF > inventory
+[all:vars]
+admin_password='<admin-user-pass>'
+pg_host=''
+pg_port=''
+pg_database='awx'
+pg_username='awx'
+pg_password='<admin-user-pass>'
+pg_sslmode='prefer'
+automationhub_admin_password=''
+automationhub_pg_host=''
+automationhub_pg_port=''
+automationhub_pg_database='automationhub'
+automationhub_pg_username='automationhub'
+automationhub_pg_password=''
+automationhub_pg_sslmode='prefer'
+automation_platform_version='2.3'
+module_setup=True
+discovered_interpreter_python='/usr/libexec/platform-python'
+bundle_install='true'
+setup_dir='/home/vagrant1/ansible-automation-platform-setup-bundle-2.3-5/.'
+[automationcontroller]
+localhost
+[aap_valid_hosts]
+localhost
+EOF
+```
 
-#### 4. Accessing the Ansible Automation Platform Console
+- **Explanation:**
+  - Creates a new `inventory` file with specified configuration settings for Ansible Automation Platform installation.
+  - Sets passwords, database configurations, Ansible version requirements, and system details.
 
-After the installation completes, access the Ansible Automation Platform console via the URL: `https://localhost/`. Log in with the admin username and password set in the inventory file (`admin_password='redhat'`).
+#### 5. Update Inventory and Run Setup Script
 
-#### 5. Create a Subscription Allocation
+```bash
+cp -av inventory inventory.backup.$( date +%F_%s )
+cp -av inventory inventory.backup
 
-1. **Create a Subscription Allocation in the Red Hat Customer Portal:**
-   - Navigate to the Red Hat Customer Portal.
-   - Create a subscription allocation.
-   - Export the manifest from the overview page.
+sed -i -r "s/^localhost/$(hostname -I)/g" inventory
 
-2. **Upload the Manifest to Activate Your Subscription:**
-   - Log in to the Ansible Automation Platform console.
-   - Navigate to the subscription management section.
-   - Upload the manifest file.
+sudo ./setup.sh
+```
 
-### Additional Documentation
+- **Explanation:**
+  - Copies and updates inventory files for backup purposes and hostname resolution.
+  - Executes `./setup.sh` script with superuser privileges to initiate the Ansible Automation Platform installation.
 
-For more details on installation and setup, refer to the following Red Hat documentation:
+#### 6. Access Ansible Automation Platform Console
 
-1. **How to Install Red Hat Ansible Automation Platform on RHEL 9**:
-   [Red Hat Developer Article](https://developers.redhat.com/articles/2023/01/01/how-install-red-hat-ansible-automation-platform-rhel-9#)
+After successful installation, access the Ansible Automation Platform console via:
 
-2. **6 Steps to Install Ansible Automation Platform 2.3 on RHEL 9.1**:
-   [Red Hat Developer Article](https://developers.redhat.com/articles/2023/03/07/install-ansible-23-on-rhel-91#)
+- URL: `https://localhost/`
+- Login: Use the admin username and password set in the inventory file.
 
-3. **Raventia/ORDS Docker Image**:
-   [Docker Hub](https://hub.docker.com/r/raventia/ords/tags)
+### Troubleshooting Tips and Recommendations
 
-By following these steps, you will have successfully installed and configured the Ansible Automation Platform on your KVM guest server.
+- **Networking Issues**: Ensure proper network connectivity between the host and guest.
+- **File Permissions**: Check and adjust file permissions as necessary for setup and configuration files.
+- **Dependency Issues**: Verify all dependencies are met, especially for database connectivity and required Ansible versions.
+
+### Documentation and Resources
+
+How to install Red Hat Ansible Automation Platform on RHEL 9
+https://developers.redhat.com/articles/2023/01/01/how-install-red-hat-ansible-automation-platform-rhel-9#
+
+**6 steps to install Ansible Automation Platform 2.3 on RHEL 9.1
+https://developers.redhat.com/articles/2023/03/07/install-ansible-23-on-rhel-91#
+
