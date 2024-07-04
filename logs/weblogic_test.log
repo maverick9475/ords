@@ -1,0 +1,271 @@
+Domain Home is:  /u01/oracle/user_projects/domains/base_domain
+
+Initializing WebLogic Scripting Tool (WLST) ...
+
+Welcome to WebLogic Server Administration Scripting Shell
+
+Type help() for help on available commands
+
+domain_name                 : [base_domain]
+admin_listen_port           : [7001]
+domain_path                 : [/u01/oracle/user_projects/domains/base_domain]
+production_mode             : [prod]
+admin name                  : [AdminServer]
+administration_port_enabled : [true]
+administration_port         : [9002]
+
+
+Exiting WebLogic Scripting Tool.
+
+.
+.
+JAVA Memory arguments: -Djava.security.egd=file:/dev/./urandom
+.
+CLASSPATH=/u01/jdk/lib/tools.jar:/u01/oracle/wlserver/server/lib/weblogic.jar:/u01/oracle/wlserver/../oracle_common/modules/thirdparty/ant-contrib-1.0b3.jar:/u01/oracle/wlserver/modules/features/oracle.wls.common.nodemanager.jar::/u01/oracle/wlserver/common/derby/lib/derbynet.jar:/u01/oracle/wlserver/common/derby/lib/derbyclient.jar:/u01/oracle/wlserver/common/derby/lib/derby.jar
+.
+PATH=/u01/oracle/user_projects/domains/base_domain/bin:/u01/oracle/wlserver/server/bin:/u01/oracle/wlserver/../oracle_common/modules/thirdparty/org.apache.ant/1.10.5.0.0/apache-ant-1.10.5/bin:/u01/jdk/jre/bin:/u01/jdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/u01/jdk/bin:/u01/oracle/oracle_common/common/bin:/u01/oracle/wlserver/common/bin:/u01/oracle:/usr/java/default/bin:/u01/oracle/oracle_common/common/bin:/u01/oracle/wlserver/common/bin
+.
+***************************************************
+*  To start WebLogic Server, use a username and   *
+*  password assigned to an admin-level user.  For *
+*  server administration, use the WebLogic Server *
+*  console at http://hostname:port/console        *
+***************************************************
+Starting WLS with line:
+/u01/jdk/bin/java -server   -Djava.security.egd=file:/dev/./urandom -cp /u01/oracle/wlserver/server/lib/weblogic-launcher.jar -Dlaunch.use.env.classpath=true -Dweblogic.Name=AdminServer -Djava.security.policy=/u01/oracle/wlserver/server/lib/weblogic.policy  -Dweblogic.ProductionModeEnabled=true  -Djava.system.class.loader=com.oracle.classloader.weblogic.LaunchClassLoader  -javaagent:/u01/oracle/wlserver/server/lib/debugpatch-agent.jar -da -Dwls.home=/u01/oracle/wlserver/server -Dweblogic.home=/u01/oracle/wlserver/server      weblogic.Server
+<Jul 4, 2024 12:37:40 PM GMT> <Info> <Security> <BEA-090905> <Disabling the CryptoJ JCE Provider self-integrity check for better startup performance. To enable this check, specify -Dweblogic.security.allowCryptoJDefaultJCEVerification=true.> 
+<Jul 4, 2024 12:37:40 PM GMT> <Info> <Security> <BEA-090906> <Changing the default Random Number Generator in RSA CryptoJ from ECDRBG128 to HMACDRBG. To disable this change, specify -Dweblogic.security.allowCryptoJDefaultPRNG=true.> 
+<Jul 4, 2024 12:37:41 PM GMT> <Info> <WebLogicServer> <BEA-000377> <Starting WebLogic Server with Java HotSpot(TM) 64-Bit Server VM Version 25.411-b60 from Oracle Corporation.> 
+<Jul 4, 2024 12:37:41 PM GMT> <Info> <RCM> <BEA-2165021> <"ResourceManagement" is not enabled in this JVM. Enable "ResourceManagement" to use the WebLogic Server "Resource Consumption Management" feature. To enable "ResourceManagement", you must specify the following JVM options in the WebLogic Server instance in which the JVM runs: -XX:+UnlockCommercialFeatures -XX:+ResourceManagement.> 
+<Jul 4, 2024 12:37:41 PM GMT> <Info> <Management> <BEA-141107> <Version: WebLogic Server 12.2.1.4.0 Thu Sep 12 04:04:29 GMT 2019 1974621> 
+<Jul 4, 2024 12:37:42 PM GMT> <Notice> <WebLogicServer> <BEA-000365> <Server state changed to STARTING.> 
+<Jul 4, 2024 12:37:42 PM GMT> <Info> <WorkManager> <BEA-002900> <Initializing self-tuning thread pool.> 
+<Jul 4, 2024 12:37:42 PM GMT> <Info> <WorkManager> <BEA-002942> <CMM memory level becomes 0. Setting standby thread pool size to 256.> 
+<Jul 4, 2024 12:37:43,034 PM GMT> <Notice> <Log Management> <BEA-170019> <The server log file weblogic.logging.FileStreamHandler instance=1679592912
+Current log file=/u01/oracle/user_projects/domains/base_domain/servers/AdminServer/logs/AdminServer.log
+Rotation dir=/u01/oracle/user_projects/domains/base_domain/servers/AdminServer/logs
+ is opened. All server side log events will be written to this file.> 
+<Jul 4, 2024 12:37:43,154 PM GMT> <Notice> <Security> <BEA-090946> <Security pre-initializing using security realm: myrealm> 
+<Jul 4, 2024 12:37:43,155 PM GMT> <Notice> <Security> <BEA-090171> <Loading the identity certificate and private key stored under the alias DemoIdentity from the jks keystore file /u01/oracle/user_projects/domains/base_domain/security/DemoIdentity.jks.> 
+<Jul 4, 2024 12:37:43,165 PM GMT> <Alert> <Security> <BEA-090153> <Demo identity certificate is used in production mode: [
+[
+  Version: V3
+  Subject: CN=3b0ca40015f5, OU=FOR TESTING ONLY, O=MyOrganization, L=MyTown, ST=MyState, C=US
+  Signature Algorithm: SHA256withRSA, OID = 1.2.840.113549.1.1.11
+
+  Key:  Sun RSA public key, 2048 bits
+  params: null
+  modulus: 22309488631233823370294147637758468567947869814596989716709843204100155089434826534600677653002160719183122469502138001037685256777641049028865567217256165429361577081982618172187080055477370378939451757112034193900598310879960482546376831126902004209943604443706231079382085052629351152811622808794297107369140581675733503079406755473011454075620088808609644101507540784546164972382970208540526742874929622386629500489730003108249347026672936166137062098182420585986686394721630708861964163067032991867081729526566501283649246305678393819470024771772277108531673740610284043441945345957977682370857930899049106334639
+  public exponent: 65537
+  Validity: [From: Wed Jul 03 12:37:37 GMT 2024,
+               To: Mon Jul 04 12:37:37 GMT 2039]
+  Issuer: CN=CertGenCA, OU=FOR TESTING ONLY, O=MyOrganization, L=MyTown, ST=MyState, C=US
+  SerialNumber: [    6ef961c7 c011438d ecf95f69 cbc7749c]
+
+Certificate Extensions: 3
+[1]: ObjectId: 2.5.29.35 Criticality=false
+AuthorityKeyIdentifier [
+KeyIdentifier [
+0000: 34 38 FD 45 D8 80 CF C7   D2 E8 DF 1D F8 A1 39 B0  48.E..........9.
+0010: 11 88 00 6A                                        ...j
+]
+]
+
+[2]: ObjectId: 2.5.29.15 Criticality=true
+KeyUsage [
+  DigitalSignature
+  Non_repudiation
+  Key_Encipherment
+  Data_Encipherment
+  Key_Agreement
+]
+
+[3]: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: CE CF A3 FC 71 A5 42 70   AD DB 74 90 6F 93 44 BD  ....q.Bp..t.o.D.
+0010: AF 65 41 41                                        .eAA
+]
+]
+
+]
+  Algorithm: [SHA256withRSA]
+  Signature:
+0000: 9F 52 52 FE EF 22 64 58   99 9D DD 29 AF 1F 97 6B  .RR.."dX...)...k
+0010: 5E 7D 13 7A 71 20 A5 FC   79 D4 AD 1B D2 51 C0 48  ^..zq ..y....Q.H
+0020: 47 15 08 DE DD 74 FD 9E   0D DC E1 67 1D 1F 40 E9  G....t.....g..@.
+0030: C9 FB B8 D4 D5 32 46 CE   62 A8 90 E3 4D 4D F1 C3  .....2F.b...MM..
+0040: 45 D8 6F E2 26 5F 39 9E   08 5A 38 C2 49 0F 4D 91  E.o.&_9..Z8.I.M.
+0050: 17 C2 D0 95 0E 39 F1 3A   4C B9 FA B5 FD 02 1E C0  .....9.:L.......
+0060: A2 84 68 B8 8C EC ED 2F   42 B4 D1 31 87 2F DA D3  ..h..../B..1./..
+0070: 22 77 E5 F3 69 B1 7B 2C   75 00 62 12 E0 5F 27 8D  "w..i..,u.b.._'.
+0080: E5 98 BD E9 47 F6 CA 93   0B 6C B1 55 B0 60 79 B5  ....G....l.U.`y.
+0090: C0 7B C8 BD 23 08 67 26   F9 10 11 E5 44 C9 30 A4  ....#.g&....D.0.
+00A0: A8 B9 FC 9B 85 03 E2 08   E6 9C A1 D3 C5 2C 20 D2  ............., .
+00B0: 03 97 39 4F 71 9F AA 42   8F 2F B5 98 5B C0 39 80  ..9Oq..B./..[.9.
+00C0: 36 12 D8 46 58 45 CF E8   3D 90 79 06 2C 3A C5 2F  6..FXE..=.y.,:./
+00D0: 9C A0 4A 58 7F 9A 1E F2   96 CD F3 F8 94 2C 51 D6  ..JX.........,Q.
+00E0: 5A D8 51 AC 70 F2 75 4A   59 18 34 65 75 5A 12 FC  Z.Q.p.uJY.4euZ..
+00F0: 02 94 D6 DC BA D6 E3 E6   96 A4 93 38 4E CE D9 C1  ...........8N...
+
+] The system is vulnerable to security attacks, since the server private key is available to the public.> 
+<Jul 4, 2024 12:37:43,167 PM GMT> <Notice> <Security> <BEA-090169> <Loading trusted certificates from the jks keystore file /u01/oracle/wlserver/server/lib/DemoTrust.jks.> 
+<Jul 4, 2024 12:37:43,170 PM GMT> <Notice> <Security> <BEA-090169> <Loading trusted certificates from the jks keystore file /u01/jdk/jre/lib/security/cacerts.> 
+<Jul 4, 2024 12:37:43,179 PM GMT> <Alert> <Security> <BEA-090152> <Demo trusted CA certificate is being used in production mode: [
+[
+  Version: V3
+  Subject: CN=CertGenCA, OU=FOR TESTING ONLY, O=MyOrganization, L=MyTown, ST=MyState, C=US
+  Signature Algorithm: SHA256withRSA, OID = 1.2.840.113549.1.1.11
+
+  Key:  Sun RSA public key, 2048 bits
+  params: null
+  modulus: 21569708395943251187594674016571604098921772745632282565929962814298138584591157613649992982592658748355964560637259269459381120165962674847997186601844952950794343884378508077250725387979264156405992230284901283444196168994202670671450098028002820729882379283494630302003296180454013575703696190719968922095992809718845192136877316024285273738556979086501184481229174883470885039602384578448109344178846134501578736532042806069180907098975317661162739134415281135882151855357804342112417305346131916129115886340854713286486175081106238445832240131690537019111854259217532593165348893830947166922845648303005469444649
+  public exponent: 65537
+  Validity: [From: Sat Dec 01 03:07:51 GMT 2012,
+               To: Thu Dec 02 03:07:51 GMT 2032]
+  Issuer: CN=CertGenCA, OU=FOR TESTING ONLY, O=MyOrganization, L=MyTown, ST=MyState, C=US
+  SerialNumber: [    40044886 c441ef3b 643a8066 409afca0]
+
+Certificate Extensions: 3
+[1]: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen:1
+]
+
+[2]: ObjectId: 2.5.29.15 Criticality=true
+KeyUsage [
+  Key_CertSign
+]
+
+[3]: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 34 38 FD 45 D8 80 CF C7   D2 E8 DF 1D F8 A1 39 B0  48.E..........9.
+0010: 11 88 00 6A                                        ...j
+]
+]
+
+]
+  Algorithm: [SHA256withRSA]
+  Signature:
+0000: 17 69 74 CF CB 96 44 33   17 B3 70 0F 2A FF A8 63  .it...D3..p.*..c
+0010: CC 7A C8 CD 74 59 99 DE   10 16 FE 3D 17 00 71 B8  .z..tY.....=..q.
+0020: B0 FC C4 3F B6 B0 6D 77   78 9F 83 9B EA 22 A3 DA  ...?..mwx...."..
+0030: D7 35 00 D6 C5 F3 37 F1   7C 28 DF AA E8 2D 2A 13  .5....7..(...-*.
+0040: 9C 38 63 B7 08 D2 0E 0D   20 93 86 3D A2 F0 86 B9  .8c..... ..=....
+0050: 2B B4 6A 3F C6 FB 61 77   36 EE 60 07 BE C2 0E E4  +.j?..aw6.`.....
+0060: 33 0C E8 08 B1 3A 25 DC   3B E2 47 30 F1 46 43 06  3....:%.;.G0.FC.
+0070: 85 EE AB 3B 65 29 12 35   D4 D9 A8 EC 90 DB 60 6A  ...;e).5......`j
+0080: 4D 13 99 EE BD 29 AA BB   1F 96 C9 88 F3 E3 63 34  M....)........c4
+0090: 73 75 D4 5D EE B7 26 CD   78 E9 AA 1E B8 42 15 01  su.]..&.x....B..
+00A0: F3 D9 2A 64 C4 70 1D 1E   E5 98 EF 1E 78 1F 6C DF  ..*d.p......x.l.
+00B0: 7D FF 4B DD 7A 53 B2 C8   0E 0D 27 27 40 DB 8D 10  ..K.zS....''@...
+00C0: 47 5B 2E F4 74 89 85 2A   1B 6A 6A 3F 65 D9 25 2B  G[..t..*.jj?e.%+
+00D0: 93 A5 33 CE 03 CC 8E 64   E1 9F F1 3C A4 AB 0F C5  ..3....d...<....
+00E0: 28 36 46 B9 F4 24 69 0A   38 E9 A6 73 92 68 AC 79  (6F..$i.8..s.h.y
+00F0: F5 E1 D7 CB D8 FF FE 15   F7 B8 39 33 D3 66 03 17  ..........93.f..
+
+]. The system is vulnerable to security attacks, since it trusts certificates signed by the demo trusted CA.> 
+<Jul 4, 2024 12:37:43,206 PM GMT> <Notice> <Server> <BEA-002613> <Channel "DefaultAdministration" is now listening on 10.0.2.100:9002 for protocols admin, ldaps, https.> 
+<Jul 4, 2024 12:37:43,371 PM GMT> <Notice> <Server> <BEA-002613> <Channel "DefaultAdministration[1]" is now listening on fd00:0:0:0:f89a:faff:fe60:8df3%tap0:9002 for protocols admin, ldaps, https.> 
+<Jul 4, 2024 12:37:43,372 PM GMT> <Warning> <Server> <BEA-002611> <The hostname "localhost", maps to multiple IP addresses: 127.0.0.1, 0:0:0:0:0:0:0:1.> 
+<Jul 4, 2024 12:37:43,373 PM GMT> <Notice> <Server> <BEA-002613> <Channel "DefaultAdministration[2]" is now listening on 0:0:0:0:0:0:0:1%lo:9002 for protocols admin, ldaps, https.> 
+<Jul 4, 2024 12:37:43,373 PM GMT> <Notice> <Server> <BEA-002613> <Channel "DefaultAdministration[3]" is now listening on 127.0.0.1:9002 for protocols admin, ldaps, https.> 
+<Jul 4, 2024 12:37:43,374 PM GMT> <Notice> <Server> <BEA-002613> <Channel "DefaultAdministration" is now listening on 10.0.2.100:9002 for protocols admin, ldaps, https.> 
+<Jul 4, 2024 12:37:43,374 PM GMT> <Notice> <Server> <BEA-002613> <Channel "DefaultAdministration[1]" is now listening on fd00:0:0:0:f89a:faff:fe60:8df3%tap0:9002 for protocols admin, ldaps, https.> 
+<Jul 4, 2024 12:37:43,375 PM GMT> <Notice> <Server> <BEA-002613> <Channel "DefaultAdministration[2]" is now listening on 0:0:0:0:0:0:0:1%lo:9002 for protocols admin, ldaps, https.> 
+<Jul 4, 2024 12:37:43,375 PM GMT> <Notice> <Server> <BEA-002613> <Channel "DefaultAdministration[3]" is now listening on 127.0.0.1:9002 for protocols admin, ldaps, https.> 
+<Jul 4, 2024 12:37:43,675 PM GMT> <Notice> <Security> <BEA-090947> <Security post-initializing using security realm: myrealm> 
+<Jul 4, 2024 12:37:44,591 PM GMT> <Notice> <Security> <BEA-090082> <Security initialized using administrative security realm: myrealm> 
+<Jul 4, 2024 12:37:44,623 PM GMT> <Notice> <Security> <BEA-090083> <Storing boot identity in the file: /u01/oracle/user_projects/domains/base_domain/servers/AdminServer/security/boot.properties.> 
+<Jul 4, 2024 12:37:44,829 PM GMT> <Notice> <JMX> <BEA-149512> <JMX Connector Server started at service:jmx:iiop://10.0.2.100:9002/jndi/weblogic.management.mbeanservers.runtime.> 
+<Jul 4, 2024 12:37:45,029 PM GMT> <Notice> <JMX> <BEA-149512> <JMX Connector Server started at service:jmx:iiop://10.0.2.100:9002/jndi/weblogic.management.mbeanservers.domainruntime.> 
+<Jul 4, 2024 12:37:45,039 PM GMT> <Notice> <JMX> <BEA-149512> <JMX Connector Server started at service:jmx:iiop://10.0.2.100:9002/jndi/weblogic.management.mbeanservers.edit.> 
+<Jul 4, 2024 12:37:46,187 PM GMT> <Notice> <WebLogicServer> <BEA-000365> <Server state changed to STANDBY.> 
+<Jul 4, 2024 12:37:46,188 PM GMT> <Notice> <WebLogicServer> <BEA-000365> <Server state changed to STARTING.> 
+<Jul 4, 2024 12:37:46,232 PM GMT> <Notice> <Log Management> <BEA-170036> <The Logging monitoring service timer has started to check for logged message counts every 30 seconds.> 
+<Jul 4, 2024 12:37:49,863 PM GMT> <Notice> <Log Management> <BEA-170027> <The server has successfully established a connection with the Domain level Diagnostic Service.> 
+<Jul 4, 2024 12:37:50,889 PM GMT> <Notice> <WebLogicServer> <BEA-000365> <Server state changed to ADMIN.> 
+<Jul 4, 2024 12:37:50,951 PM GMT> <Notice> <WebLogicServer> <BEA-000365> <Server state changed to RESUMING.> 
+<Jul 4, 2024 12:37:51,014 PM GMT> <Alert> <Security> <BEA-090153> <Demo identity certificate is used in production mode: [
+[
+  Version: V3
+  Subject: CN=3b0ca40015f5, OU=FOR TESTING ONLY, O=MyOrganization, L=MyTown, ST=MyState, C=US
+  Signature Algorithm: SHA256withRSA, OID = 1.2.840.113549.1.1.11
+
+  Key:  Sun RSA public key, 2048 bits
+  params: null
+  modulus: 22309488631233823370294147637758468567947869814596989716709843204100155089434826534600677653002160719183122469502138001037685256777641049028865567217256165429361577081982618172187080055477370378939451757112034193900598310879960482546376831126902004209943604443706231079382085052629351152811622808794297107369140581675733503079406755473011454075620088808609644101507540784546164972382970208540526742874929622386629500489730003108249347026672936166137062098182420585986686394721630708861964163067032991867081729526566501283649246305678393819470024771772277108531673740610284043441945345957977682370857930899049106334639
+  public exponent: 65537
+  Validity: [From: Wed Jul 03 12:37:37 GMT 2024,
+               To: Mon Jul 04 12:37:37 GMT 2039]
+  Issuer: CN=CertGenCA, OU=FOR TESTING ONLY, O=MyOrganization, L=MyTown, ST=MyState, C=US
+  SerialNumber: [    6ef961c7 c011438d ecf95f69 cbc7749c]
+
+Certificate Extensions: 3
+[1]: ObjectId: 2.5.29.35 Criticality=false
+AuthorityKeyIdentifier [
+KeyIdentifier [
+0000: 34 38 FD 45 D8 80 CF C7   D2 E8 DF 1D F8 A1 39 B0  48.E..........9.
+0010: 11 88 00 6A                                        ...j
+]
+]
+
+[2]: ObjectId: 2.5.29.15 Criticality=true
+KeyUsage [
+  DigitalSignature
+  Non_repudiation
+  Key_Encipherment
+  Data_Encipherment
+  Key_Agreement
+]
+
+[3]: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: CE CF A3 FC 71 A5 42 70   AD DB 74 90 6F 93 44 BD  ....q.Bp..t.o.D.
+0010: AF 65 41 41                                        .eAA
+]
+]
+
+]
+  Algorithm: [SHA256withRSA]
+  Signature:
+0000: 9F 52 52 FE EF 22 64 58   99 9D DD 29 AF 1F 97 6B  .RR.."dX...)...k
+0010: 5E 7D 13 7A 71 20 A5 FC   79 D4 AD 1B D2 51 C0 48  ^..zq ..y....Q.H
+0020: 47 15 08 DE DD 74 FD 9E   0D DC E1 67 1D 1F 40 E9  G....t.....g..@.
+0030: C9 FB B8 D4 D5 32 46 CE   62 A8 90 E3 4D 4D F1 C3  .....2F.b...MM..
+0040: 45 D8 6F E2 26 5F 39 9E   08 5A 38 C2 49 0F 4D 91  E.o.&_9..Z8.I.M.
+0050: 17 C2 D0 95 0E 39 F1 3A   4C B9 FA B5 FD 02 1E C0  .....9.:L.......
+0060: A2 84 68 B8 8C EC ED 2F   42 B4 D1 31 87 2F DA D3  ..h..../B..1./..
+0070: 22 77 E5 F3 69 B1 7B 2C   75 00 62 12 E0 5F 27 8D  "w..i..,u.b.._'.
+0080: E5 98 BD E9 47 F6 CA 93   0B 6C B1 55 B0 60 79 B5  ....G....l.U.`y.
+0090: C0 7B C8 BD 23 08 67 26   F9 10 11 E5 44 C9 30 A4  ....#.g&....D.0.
+00A0: A8 B9 FC 9B 85 03 E2 08   E6 9C A1 D3 C5 2C 20 D2  ............., .
+00B0: 03 97 39 4F 71 9F AA 42   8F 2F B5 98 5B C0 39 80  ..9Oq..B./..[.9.
+00C0: 36 12 D8 46 58 45 CF E8   3D 90 79 06 2C 3A C5 2F  6..FXE..=.y.,:./
+00D0: 9C A0 4A 58 7F 9A 1E F2   96 CD F3 F8 94 2C 51 D6  ..JX.........,Q.
+00E0: 5A D8 51 AC 70 F2 75 4A   59 18 34 65 75 5A 12 FC  Z.Q.p.uJY.4euZ..
+00F0: 02 94 D6 DC BA D6 E3 E6   96 A4 93 38 4E CE D9 C1  ...........8N...
+
+] The system is vulnerable to security attacks, since the server private key is available to the public.> 
+<Jul 4, 2024 12:37:51,016 PM GMT> <Notice> <Server> <BEA-002613> <Channel "DefaultSecure[3]" is now listening on 127.0.0.1:7002 for protocols iiops, t3s, ldaps, https.> 
+<Jul 4, 2024 12:37:51,017 PM GMT> <Notice> <Server> <BEA-002613> <Channel "Default[3]" is now listening on 127.0.0.1:7001 for protocols iiop, t3, ldap, snmp, http.> 
+<Jul 4, 2024 12:37:51,017 PM GMT> <Notice> <Server> <BEA-002613> <Channel "Default" is now listening on 10.0.2.100:7001 for protocols iiop, t3, ldap, snmp, http.> 
+<Jul 4, 2024 12:37:51,017 PM GMT> <Notice> <Server> <BEA-002613> <Channel "DefaultSecure" is now listening on 10.0.2.100:7002 for protocols iiops, t3s, ldaps, https.> 
+<Jul 4, 2024 12:37:51,018 PM GMT> <Notice> <Server> <BEA-002613> <Channel "DefaultSecure[2]" is now listening on 0:0:0:0:0:0:0:1%lo:7002 for protocols iiops, t3s, ldaps, https.> 
+<Jul 4, 2024 12:37:51,018 PM GMT> <Notice> <Server> <BEA-002613> <Channel "Default[2]" is now listening on 0:0:0:0:0:0:0:1%lo:7001 for protocols iiop, t3, ldap, snmp, http.> 
+<Jul 4, 2024 12:37:51,121 PM GMT> <Notice> <Server> <BEA-002613> <Channel "DefaultSecure[1]" is now listening on fd00:0:0:0:f89a:faff:fe60:8df3%tap0:7002 for protocols iiops, t3s, ldaps, https.> 
+<Jul 4, 2024 12:37:51,372 PM GMT> <Notice> <Server> <BEA-002613> <Channel "Default[1]" is now listening on fd00:0:0:0:f89a:faff:fe60:8df3%tap0:7001 for protocols iiop, t3, ldap, snmp, http.> 
+<Jul 4, 2024 12:37:51,372 PM GMT> <Notice> <WebLogicServer> <BEA-000329> <Started the WebLogic Server Administration Server "AdminServer" for domain "base_domain" running in production mode.> 
+<Jul 4, 2024 12:37:51,372 PM GMT> <Notice> <Server> <BEA-002613> <Channel "DefaultSecure[3]" is now listening on 127.0.0.1:7002 for protocols iiops, t3s, ldaps, https.> 
+<Jul 4, 2024 12:37:51,373 PM GMT> <Notice> <Server> <BEA-002613> <Channel "Default[3]" is now listening on 127.0.0.1:7001 for protocols iiop, t3, ldap, snmp, http.> 
+<Jul 4, 2024 12:37:51,374 PM GMT> <Notice> <Server> <BEA-002613> <Channel "Default" is now listening on 10.0.2.100:7001 for protocols iiop, t3, ldap, snmp, http.> 
+<Jul 4, 2024 12:37:51,374 PM GMT> <Notice> <Server> <BEA-002613> <Channel "DefaultSecure" is now listening on 10.0.2.100:7002 for protocols iiops, t3s, ldaps, https.> 
+<Jul 4, 2024 12:37:51,375 PM GMT> <Notice> <Server> <BEA-002613> <Channel "DefaultSecure[2]" is now listening on 0:0:0:0:0:0:0:1%lo:7002 for protocols iiops, t3s, ldaps, https.> 
+<Jul 4, 2024 12:37:51,376 PM GMT> <Notice> <Server> <BEA-002613> <Channel "Default[2]" is now listening on 0:0:0:0:0:0:0:1%lo:7001 for protocols iiop, t3, ldap, snmp, http.> 
+<Jul 4, 2024 12:37:51,376 PM GMT> <Notice> <Server> <BEA-002613> <Channel "DefaultSecure[1]" is now listening on fd00:0:0:0:f89a:faff:fe60:8df3%tap0:7002 for protocols iiops, t3s, ldaps, https.> 
+<Jul 4, 2024 12:37:51,377 PM GMT> <Notice> <WebLogicServer> <BEA-000360> <The server started in RUNNING mode.> 
+<Jul 4, 2024 12:37:51,377 PM GMT> <Notice> <Server> <BEA-002613> <Channel "Default[1]" is now listening on fd00:0:0:0:f89a:faff:fe60:8df3%tap0:7001 for protocols iiop, t3, ldap, snmp, http.> 
+<Jul 4, 2024 12:37:51,393 PM GMT> <Notice> <WebLogicServer> <BEA-000365> <Server state changed to RUNNING.> 

@@ -1,0 +1,94 @@
+INFO : This container will start a service running ORDS 24.1.1 and APEX 23.2.0.
+INFO : CONN_STRING has been found in the container variables file.
+INFO : Database connection established.
+INFO : Apex is not installed on your database.
+INFO : Installing APEX on your DB please be patient.
+INFO : You can check the logs by running the command below in a new terminal window:
+       	docker exec -it 0ebebf792d68 tail -f /tmp/install_container.log
+WARN : APEX can be installed remotely on PDBs, If you want to install it on a CDB,
+       install it directly on the Database and not remotely.
+INFO : APEX has been installed.
+INFO : Configuring APEX.
+INFO : APEX_PUBLIC_USER has been configured as oracle.
+INFO : APEX ADMIN password has configured as 'Welcome_1'.
+INFO : Use below login credentials to first time login to APEX service:
+       	Workspace: internal
+       	User:      ADMIN
+       	Password:  Welcome_1
+INFO : Preparing ORDS.
+2024-07-04T12:21:53Z INFO	ORDS has not detected the option '--config' and this will be set up to the default directory.
+
+ORDS: Release 24.1 Production on Thu Jul 04 12:21:55 2024
+
+Copyright (c) 2010, 2024, Oracle.
+
+Configuration:
+  /etc/ords/config
+
+Created folder /tmp/ords_logs/install_logs_DB
+Oracle REST Data Services - Non-Interactive Install
+
+Retrieving information...
+Completed verifying Oracle REST Data Services schema version 24.1.1.r1201228.
+Connecting to database user: ORDS_PUBLIC_USER url: jdbc:oracle:thin:@//192.168.122.9:1521/ORCLCDB
+The setting named: db.connectionType was set to: basic in configuration: default
+The setting named: db.hostname was set to: 192.168.122.9 in configuration: default
+The setting named: db.port was set to: 1521 in configuration: default
+The setting named: db.servicename was set to: ORCLCDB in configuration: default
+The setting named: db.serviceNameSuffix was set to:  in configuration: default
+The setting named: db.username was set to: ORDS_PUBLIC_USER in configuration: default
+The setting named: db.password was set to: ****** in configuration: default
+The setting named: feature.sdw was set to: true in configuration: default
+The global setting named: database.api.enabled was set to: true
+The setting named: restEnabledSql.active was set to: true in configuration: default
+The setting named: security.requestValidationFunction was set to: ords_util.authorize_plsql_gateway in configuration: default
+INFO : Configuring db.invalidPoolTimeout 5s
+
+ORDS: Release 24.1 Production on Thu Jul 04 12:22:00 2024
+
+Copyright (c) 2010, 2024, Oracle.
+
+Configuration:
+  /etc/ords/config
+
+The global setting named: db.invalidPoolTimeout was set to: 5s
+INFO : Configuring debug.printDebugToScreen true
+
+ORDS: Release 24.1 Production on Thu Jul 04 12:22:02 2024
+
+Copyright (c) 2010, 2024, Oracle.
+
+Configuration:
+  /etc/ords/config
+
+The global setting named: debug.printDebugToScreen was set to: true
+INFO : Configuring jdbc.MaxLimit 30
+
+ORDS: Release 24.1 Production on Thu Jul 04 12:22:05 2024
+
+Copyright (c) 2010, 2024, Oracle.
+
+Configuration:
+  /etc/ords/config
+
+The setting named: jdbc.MaxLimit was set to: 30 in configuration: default
+INFO : Configuring jdbc.InitialLimit 10
+
+ORDS: Release 24.1 Production on Thu Jul 04 12:22:07 2024
+
+Copyright (c) 2010, 2024, Oracle.
+
+Configuration:
+  /etc/ords/config
+
+The setting named: jdbc.InitialLimit was set to: 10 in configuration: default
+INFO : Starting the ORDS services with the following database details:
+INFO :   192.168.122.9:1521/ORCLCDB.
+
+ORDS: Release 24.1 Production on Thu Jul 04 12:22:11 2024
+
+Copyright (c) 2010, 2024, Oracle.
+
+Configuration:
+  /etc/ords/config
+
