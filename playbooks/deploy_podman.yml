@@ -1,0 +1,31 @@
+---
+- name: Setup Podman on RHEL 8
+  hosts: all
+  become: yes
+  vars:
+    container_tools_stream: "rhel8"  # Change to "2.0" for stable versions of Podman 1.6
+
+  tasks:
+    - name: Ensure the system is up to date
+      yum:
+        name: "*"
+        state: latest
+
+    - name: Enable the container-tools module
+      command: yum module enable -y container-tools:{{ container_tools_stream }}
+      register: enable_module_output
+      changed_when: "'enabled' in enable_module_output.stdout"
+
+    - name: Install container-tools module
+      command: yum module install -y container-tools:{{ container_tools_stream }}
+      register: install_module_output
+      changed_when: "'installed' in install_module_output.stdout"
+
+    - name: Verify Podman installation
+      command: podman --version
+      register: podman_version_output
+
+    - name: Display Podman version
+      debug:
+        msg: "Podman version installed: {{ podman_version_output.stdout }}"
+

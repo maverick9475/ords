@@ -1,0 +1,95 @@
+
+# Make sure to login in the Oracle Repository with your username and password to download the container images.
+podman login container-registry.oracle.com
+
+
+## --------------------------------------------------------------------------------
+##
+
+podman pull container-registry.oracle.com/database/enterprise:21.3.0.0
+
+sestatus
+
+mkdir -p oradata
+
+sudo chmod 777 oradata
+
+sudo chown 54321:54321 oradata
+
+sudo chcon -R system_u:object_r:container_file_t:s0 oradata
+
+podman run -d --name oradb21 \
+ -p 1521:1521 -p 5500:5500 \
+ -e ORACLE_PWD=4LSdWeQuGWFssjgkR \
+ -e ENABLE_ARCHIVELOG=true \
+ -v ./oradata:/opt/oracle/oradata \
+ container-registry.oracle.com/database/enterprise:21.3.0.0
+
+podman logs oradb21
+
+podman stop oradb21 && podman rm oradb21
+
+podman exec -it oradb21 /bin/bash
+
+
+## --------------------------------------------------------------------------------
+##
+
+podman pull container-registry.oracle.com/database/ords:latest
+
+sudo rm -rf ords_secrets ords_config
+
+mkdir -p ords_secrets ords_config
+
+echo 'CONN_STRING=sys/4LSdWeQuGWFssjgkR@192.168.122.9:1521/ORCLCDB' > ./ords_secrets/conn_string.txt
+
+cat ords_secrets/conn_string.txt
+
+chmod -R 777 ords_secrets ords_config
+
+sudo chcon -R system_u:object_r:container_file_t:s0 ords_secrets ords_config
+
+podman run -d --name ords -p 8181:8181 \
+  -v ./ords_secrets/:/opt/oracle/variables \
+  container-registry.oracle.com/database/ords:latest
+
+podman logs ords
+
+podman logs -tf ords
+
+podman stop ords && podman rm ords
+
+
+podman run -d --name ords -p 8181:8181 \
+  -v ./ords_secrets/:/opt/oracle/variables \
+  -v ./ords_config/:/etc/ords/config/ \
+  container-registry.oracle.com/database/ords:latest
+
+
+## --------------------------------------------------------------------------------
+##
+
+podman pull container-registry.oracle.com/middleware/weblogic:12.2.1.4
+
+sudo rm -rf middleware
+
+mkdir -p middleware
+
+echo -e "username=webadmin\npassword=4LSdWeQuGWFssjgkR" > middleware/domain.properties
+
+cat middleware/domain.properties
+
+chmod -R 777 middleware
+
+sudo chcon -R system_u:object_r:container_file_t:s0 middleware
+
+podman run -d --name weblogic \
+  -p 7001:7001 -p 9002:9002 \
+  -v ./middleware:/u01/oracle/properties \
+  container-registry.oracle.com/middleware/weblogic:12.2.1.4
+
+podman logs -tf weblogic
+
+podman stop weblogic && podman rm weblogic
+
+
