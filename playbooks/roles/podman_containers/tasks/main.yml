@@ -51,7 +51,7 @@
 
     - name: Wait for Oracle Database to initialize
       pause:
-        minutes: 2
+        minutes: 6
 
     - name: Save Oracle Database container logs
       command:
