@@ -5,19 +5,19 @@
 
 - name: Login to Oracle Container Registry
   command: >
-    podman login -u {{ registry_username }} -p {{ registry_password }}
+    /usr/bin/podman login -u {{ registry_username }} -p {{ registry_password }}
     container-registry.oracle.com
   register: login_result
   failed_when: "'Login Succeeded' not in login_result.stdout"
 
 - name: Pull Oracle Database image
-  command: podman pull {{ oracle_database_image }}
+  command: /usr/bin/podman pull {{ oracle_database_image }}
 
 - name: Pull Oracle REST Data Services image
-  command: podman pull {{ ords_image }}
+  command: /usr/bin/podman pull {{ ords_image }}
 
 - name: Pull Oracle WebLogic image
-  command: podman pull {{ weblogic_image }}
+  command: /usr/bin/podman pull {{ weblogic_image }}
 
 - name: Setup Oracle Database container
   block:
@@ -41,7 +41,7 @@
 
     - name: Deploy Oracle Database container
       command: >
-        podman run -d --name oracle_database --replace
+        /usr/bin/podman run -d --name oracle_database --replace
         -p 1521:1521 -p 5500:5500
         -e ORACLE_PWD={{ oracle_pwd }}
         -e ENABLE_ARCHIVELOG=true
@@ -106,7 +106,7 @@
 
     - name: Deploy Oracle RDS container
       command: >
-        podman run -d --name oracle_rds --replace
+        /usr/bin/podman run -d --name oracle_rds --replace
         -p 8181:8181
         -v /etc/localtime:/etc/localtime:ro
         -v {{ containers_base_dir }}/oracle_rds/ords_secrets:/opt/oracle/variables
@@ -179,7 +179,7 @@
 
     - name: Deploy Oracle WebLogic container
       command: >
-        podman run -d --name oracle_weblogic --replace
+        /usr/bin/podman run -d --name oracle_weblogic --replace
         -p 7001:7001 -p 9002:9002
         -v /etc/localtime:/etc/localtime:ro
         -v {{ containers_base_dir }}/oracle_weblogic/middleware/properties:/u01/oracle/properties
