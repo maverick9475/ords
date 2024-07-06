@@ -1,0 +1,14 @@
+[Unit]
+Description={{ description }}
+After=network.target
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/podman start -a {{ container_name }}
+ExecStop=/usr/bin/podman stop -t 10 {{ container_name }}
+ExecReload=/usr/bin/podman restart {{ container_name }}
+KillMode=none
+Type=simple
+
+[Install]
+WantedBy=multi-user.target

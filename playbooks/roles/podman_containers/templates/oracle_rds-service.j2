@@ -1,0 +1,15 @@
+[Unit]
+Description=Oracle RDS Container
+After=network.target oracle_database.service
+Requires=oracle_database.service
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/podman start -a oracle_rds
+ExecStop=/usr/bin/podman stop -t 10 oracle_rds
+ExecReload=/usr/bin/podman restart oracle_rds
+KillMode=none
+Type=simple
+
+[Install]
+WantedBy=multi-user.target

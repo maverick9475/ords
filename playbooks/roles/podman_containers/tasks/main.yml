@@ -1,0 +1,185 @@
+- name: Ensure the base directory for containers exists
+  file:
+    path: "{{ containers_base_dir }}"
+    state: directory
+
+- name: Login to Oracle Container Registry
+  command: >
+    podman login -u {{ registry_username }} -p {{ registry_password }}
+    container-registry.oracle.com
+  register: login_result
+  failed_when: "'Login Succeeded' not in login_result.stdout"
+
+- name: Pull Oracle Database image
+  command: podman pull {{ oracle_database_image }}
+
+- name: Pull Oracle REST Data Services image
+  command: podman pull {{ ords_image }}
+
+- name: Pull Oracle WebLogic image
+  command: podman pull {{ weblogic_image }}
+
+- name: Setup Oracle Database container
+  block:
+    - name: Create and enter the directory for oracle_database
+      file:
+        path: "{{ containers_base_dir }}/oracle_database"
+        state: directory
+
+    - name: Create the Oracle Database data directory
+      file:
+        path: "{{ containers_base_dir }}/oracle_database/oradata"
+        state: directory
+        mode: '0777'
+        owner: 54321
+        group: 54321
+
+    - name: Update SELinux context for Oracle Database data directory
+      command: chcon -R system_u:object_r:container_file_t:s0 {{ containers_base_dir }}/oracle_database/oradata
+
+    - name: Deploy Oracle Database container
+      command: >
+        podman run -d --name oracle_database --replace
+        -p 1521:1521 -p 5500:5500
+        -e ORACLE_PWD={{ oracle_pwd }}
+        -e ENABLE_ARCHIVELOG=true
+        -v /etc/localtime:/etc/localtime:ro
+        -v {{ containers_base_dir }}/oracle_database/oradata:/opt/oracle/oradata
+        {{ oracle_database_image }}
+
+    - name: Wait for Oracle Database to initialize
+      pause:
+        minutes: 1
+
+    - name: Save Oracle Database container logs
+      command: podman logs oracle_database > {{ containers_base_dir }}/oracle_database/database-deployment.logs
+
+    - name: Create systemd service for Oracle Database
+      template:
+        src: systemd-service.j2
+        dest: /etc/systemd/system/oracle_database.service
+      vars:
+        service_name: oracle_database
+        description: Oracle Database Container
+        container_name: oracle_database
+
+- name: Setup Oracle RDS container
+  block:
+    - name: Create and enter the directory for oracle_rds
+      file:
+        path: "{{ containers_base_dir }}/oracle_rds"
+        state: directory
+
+    - name: Create directories for ORDS data and configuration files
+      file:
+        path: "{{ containers_base_dir }}/oracle_rds/{{ item }}"
+        state: directory
+        mode: '0777'
+      loop:
+        - ords_secrets
+        - ords_config
+
+    - name: Create connection string for ORDS
+      copy:
+        content: "CONN_STRING={{ db_conn_string }}"
+        dest: "{{ containers_base_dir }}/oracle_rds/ords_secrets/conn_string.txt"
+
+    - name: Update SELinux context for ORDS directories
+      command: chcon -R system_u:object_r:container_file_t:s0 {{ containers_base_dir }}/oracle_rds/{{ item }}
+      loop:
+        - ords_secrets
+        - ords_config
+
+    - name: Deploy Oracle RDS container
+      command: >
+        podman run -d --name oracle_rds --replace
+        -p 8181:8181
+        -v /etc/localtime:/etc/localtime:ro
+        -v {{ containers_base_dir }}/oracle_rds/ords_secrets:/opt/oracle/variables
+        -v {{ containers_base_dir }}/oracle_rds/ords_config:/etc/ords/config/
+        {{ ords_image }}
+
+    - name: Wait for Oracle RDS to initialize
+      pause:
+        minutes: 1
+
+    - name: Save Oracle RDS container logs
+      command: podman logs oracle_rds > {{ containers_base_dir }}/oracle_rds/oracle_rds.logs
+
+    - name: Create systemd service for Oracle RDS
+      template:
+        src: oracle_rds-service.j2
+        dest: /etc/systemd/system/oracle_rds.service
+
+- name: Setup Oracle WebLogic container
+  block:
+    - name: Create and enter the directory for oracle_weblogic
+      file:
+        path: "{{ containers_base_dir }}/oracle_weblogic"
+        state: directory
+
+    - name: Create directories for WebLogic data and configuration files
+      file:
+        path: "{{ containers_base_dir }}/oracle_weblogic/middleware/{{ item }}"
+        state: directory
+        mode: '0777'
+      loop:
+        - properties
+        - user_projects
+
+    - name: Create WebLogic administrator credentials
+      copy:
+        content: |
+          username={{ weblogic_admin_user }}
+          password={{ oracle_pwd }}
+        dest: "{{ containers_base_dir }}/oracle_weblogic/middleware/properties/domain.properties"
+
+    - name: Create WebLogic database connection properties
+      copy:
+        content: |
+          db_user=SYS
+          db_pass={{ oracle_pwd }}
+          db_schema=ORCLCDB
+          db_url=jdbc:oracle:thin:@192.168.122.9:1521/ORCLCDB
+        dest: "{{ containers_base_dir }}/oracle_weblogic/middleware/properties/domain_security.properties"
+
+    - name: Update SELinux context for WebLogic directories
+      command: chcon -R system_u:object_r:container_file_t:s0 {{ containers_base_dir }}/oracle_weblogic/middleware
+
+    - name: Deploy Oracle WebLogic container
+      command: >
+        podman run -d --name oracle_weblogic --replace
+        -p 7001:7001 -p 9002:9002
+        -v /etc/localtime:/etc/localtime:ro
+        -v {{ containers_base_dir }}/oracle_weblogic/middleware/properties:/u01/oracle/properties
+        -v {{ containers_base_dir }}/oracle_weblogic/middleware/user_projects:/u01/oracle/user_projects
+        {{ weblogic_image }}
+
+    - name: Save Oracle WebLogic container logs
+      command: podman logs oracle_weblogic > {{ containers_base_dir }}/oracle_weblogic/oracle_weblogic.logs
+
+    - name: Create systemd service for Oracle WebLogic
+      template:
+        src: oracle_weblogic-service.j2
+        dest: /etc/systemd/system/oracle_weblogic.service
+
+- name: Reload systemd daemon
+  command: systemctl daemon-reload
+
+- name: Enable and start Oracle Database service
+  systemd:
+    name: oracle_database
+    enabled: yes
+    state: started
+
+- name: Enable and start Oracle RDS service
+  systemd:
+    name: oracle_rds
+    enabled: yes
+    state: started
+
+- name: Enable and start Oracle WebLogic service
+  systemd:
+    name: oracle_weblogic
+    enabled: yes
+    state: started
