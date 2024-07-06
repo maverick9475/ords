@@ -170,7 +170,7 @@
           db_user=SYS
           db_pass={{ oracle_pwd }}
           db_schema=ORCLCDB
-          db_url=jdbc:oracle:thin:@192.168.122.9:1521/ORCLCDB
+          db_url={{ db_url_string }}
         dest: "{{ containers_base_dir }}/oracle_weblogic/middleware/properties/domain_security.properties"
 
     - name: Update SELinux context for WebLogic directories
