@@ -1,6 +1,7 @@
 [Unit]
 Description={{ description }}
-After=network.target
+After=network.target {{ unit_dependency }}.service
+Requires={{ unit_dependency }}.service
 
 [Service]
 User={{ podman_user }}
@@ -13,3 +14,4 @@ Type=simple
 
 [Install]
 WantedBy=multi-user.target
+

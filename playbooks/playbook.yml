@@ -1,4 +1,4 @@
 - hosts: localhost
-  become: yes
+  become: no
   roles:
     - podman_containers
